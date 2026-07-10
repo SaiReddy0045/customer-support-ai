@@ -27,4 +27,4 @@ Every feature is developed step by step with proper understanding instead of cop
 
 ## 👨‍💻 Author
 
-sai reddy
+T.Sai Kumar Reddy
