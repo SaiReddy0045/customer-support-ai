@@ -1,0 +1,51 @@
+.input-container{
+
+    display:flex;
+
+    padding:20px;
+
+    border-top:1px solid #ddd;
+
+    background:white;
+
+}
+
+.input-container input{
+
+    flex:1;
+
+    padding:14px;
+
+    border-radius:8px;
+
+    border:1px solid #ccc;
+
+    font-size:16px;
+
+}
+
+.input-container button{
+
+    margin-left:15px;
+
+    padding:14px 25px;
+
+    border:none;
+
+    border-radius:8px;
+
+    background:#2563eb;
+
+    color:white;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+}
+
+.input-container button:hover{
+
+    background:#1d4ed8;
+
+}
