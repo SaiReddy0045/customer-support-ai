@@ -2,10 +2,10 @@ from typing import TypedDict
 
 from langgraph.graph import StateGraph, END
 
-from backend.agents.agents.intent_classifier import classify_intent
-from backend.agents.agents.billing_agent import handle_billing
-from backend.agents.agents.refund_agent import handle_refund
-from backend.agents.agents.support_agent import handle_support
+from agents.supervisor_agent import supervisor_agent
+from agents.billing_agent import handle_billing
+from agents.refund_agent import handle_refund
+from agents.support_agent import handle_support
 
 
 class SupportState(TypedDict):
@@ -15,68 +15,81 @@ class SupportState(TypedDict):
 
 
 # -----------------------------
-# Nodes
+# Supervisor Agent
 # -----------------------------
 
-def classify_node(state: SupportState):
-    intent = classify_intent(state["query"])
+def supervisor_node(state: SupportState):
+
+    intent = supervisor_agent(state["query"])
+
     return {
         "intent": intent
     }
 
 
+# -----------------------------
+# Specialist Agents
+# -----------------------------
+
 def billing_node(state: SupportState):
+
     response = handle_billing(state["query"])
+
     return {
         "response": response
     }
 
 
 def refund_node(state: SupportState):
+
     response = handle_refund(state["query"])
+
     return {
         "response": response
     }
 
 
 def support_node(state: SupportState):
+
     response = handle_support(state["query"])
+
     return {
         "response": response
     }
 
 
 # -----------------------------
-# Router
+# Supervisor Router
 # -----------------------------
 
-def router(state: SupportState):
+def route_to_agent(state: SupportState):
 
     if state["intent"] == "billing":
         return "billing"
 
-    elif state["intent"] == "refund":
+    if state["intent"] == "refund":
         return "refund"
 
     return "support"
 
 
 # -----------------------------
-# Graph
+# Build LangGraph
 # -----------------------------
 
 builder = StateGraph(SupportState)
 
-builder.add_node("classifier", classify_node)
+builder.add_node("supervisor", supervisor_node)
+
 builder.add_node("billing", billing_node)
 builder.add_node("refund", refund_node)
 builder.add_node("support", support_node)
 
-builder.set_entry_point("classifier")
+builder.set_entry_point("supervisor")
 
 builder.add_conditional_edges(
-    "classifier",
-    router,
+    "supervisor",
+    route_to_agent,
     {
         "billing": "billing",
         "refund": "refund",

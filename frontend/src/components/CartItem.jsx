@@ -4,7 +4,7 @@ import { formatPrice } from "../utils/format";
 function CartItem({ item, onQuantity, onRemove }) {
   return (
     <div className="cart-item">
-      <ProductImage icon={item.icon} name={item.category} />
+      <ProductImage product={item} />
       <div className="cart-item-info">
         <h3>{item.name}</h3>
         <p>{item.category}</p>

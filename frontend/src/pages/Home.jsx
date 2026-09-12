@@ -40,10 +40,11 @@ function Home() {
   }, []);
 
   return (
-    <div className="page home-page">
-      <section className="hero-section">
-        <div className="hero-copy">
-          <p className="eyebrow">ABC Technologies</p>
+    <div className="home-page">
+      <section className="hero-banner">
+        <img src="/images/hero.jpg" alt="ABC Technologies devices on a desk" />
+        <div className="hero-overlay">
+          <p className="eyebrow light">ABC Technologies</p>
           <h1>Technology made for you.</h1>
           <p>
             Explore smart devices, accessories and technology products from ABC
@@ -58,65 +59,70 @@ function Home() {
             <Link to="/products" className="btn primary">
               Explore Products
             </Link>
-            <Link to="/support" className="btn ghost">
+            <Link to="/support" className="btn light">
               Ask AI Assistant
             </Link>
           </div>
         </div>
-
-        <article className="ai-promo-card">
-          <p className="eyebrow">Need help choosing a product?</p>
-          <h2>Ask our AI Customer Support Assistant.</h2>
-          <p>
-            Billing, refunds, order tracking and product advice — one chat that
-            will later connect to LangGraph agents.
-          </p>
-          <div className="mini-chat">
-            <div className="mini-bubble bot">Where is my latest order?</div>
-            <div className="mini-bubble user">I can check that for you.</div>
-          </div>
-          <Link to="/support" className="btn primary">
-            Talk to AI Support
-          </Link>
-        </article>
       </section>
 
-      <section className="section">
-        <div className="section-heading">
-          <div>
-            <p className="eyebrow">Our products</p>
-            <h2>Featured Products</h2>
-          </div>
-          <Link to="/products">View all</Link>
-        </div>
-        {loading ? (
-          <Loading label="Loading products..." />
-        ) : (
-          <ProductGrid
-            products={products}
-            busyId={busyId}
-            onAddToCart={addToCart}
-          />
-        )}
-      </section>
+      <div className="page">
+        <section className="ai-promo-wide">
+          <img src="/images/lifestyle.jpg" alt="Customer using a smartphone" />
+          <article>
+            <p className="eyebrow">Need help choosing a product?</p>
+            <h2>Ask our AI Customer Support Assistant.</h2>
+            <p>
+              Billing, refunds, order tracking and product advice — one chat that
+              will later connect to LangGraph agents.
+            </p>
+            <div className="mini-chat">
+              <div className="mini-bubble bot">Where is my latest order?</div>
+              <div className="mini-bubble user">I can check that for you.</div>
+            </div>
+            <Link to="/support" className="btn primary">
+              Talk to AI Support
+            </Link>
+          </article>
+        </section>
 
-      <section className="section">
-        <div className="section-heading">
-          <div>
-            <p className="eyebrow">Why ABC</p>
-            <h2>Why ABC Technologies?</h2>
+        <section className="section">
+          <div className="section-heading">
+            <div>
+              <p className="eyebrow">Our products</p>
+              <h2>Featured Products</h2>
+            </div>
+            <Link to="/products">View all</Link>
           </div>
-        </div>
-        <div className="reason-grid">
-          {reasons.map((reason) => (
-            <article key={reason.title} className="reason-card">
-              <reason.icon />
-              <h3>{reason.title}</h3>
-              <p>{reason.text}</p>
-            </article>
-          ))}
-        </div>
-      </section>
+          {loading ? (
+            <Loading label="Loading products..." />
+          ) : (
+            <ProductGrid
+              products={products}
+              busyId={busyId}
+              onAddToCart={addToCart}
+            />
+          )}
+        </section>
+
+        <section className="section">
+          <div className="section-heading">
+            <div>
+              <p className="eyebrow">Why ABC</p>
+              <h2>Why ABC Technologies?</h2>
+            </div>
+          </div>
+          <div className="reason-grid">
+            {reasons.map((reason) => (
+              <article key={reason.title} className="reason-card">
+                <reason.icon />
+                <h3>{reason.title}</h3>
+                <p>{reason.text}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+      </div>
     </div>
   );
 }

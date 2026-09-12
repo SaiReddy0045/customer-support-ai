@@ -6,7 +6,39 @@ billing
 refund
 support
 
-Rules:
+Use these rules:
+
+BILLING:
+Choose billing when the customer has a problem with a charge, payment, invoice, subscription charge, duplicate charge, incorrect amount, or was charged more than once.
+
+Examples:
+"I was charged twice" -> billing
+"I was charged double" -> billing
+"My invoice is incorrect" -> billing
+"I have an incorrect charge" -> billing
+"I was charged the wrong amount" -> billing
+
+REFUND:
+Choose refund when the customer explicitly wants their money back, requests a refund, asks how to get a refund, or wants to cancel a purchase and receive their money back.
+
+Examples:
+"I want a refund" -> refund
+"How can I get my money back?" -> refund
+"I need to request a refund" -> refund
+"Can I get a refund for my order?" -> refund
+
+SUPPORT:
+Choose support for general questions, account problems, password problems, product questions, or issues that are not specifically about billing or refunds.
+
+Examples:
+"How do I reset my password?" -> support
+"How do I contact support?" -> support
+"How does your service work?" -> support
+"Hello, I need help" -> support
+
+Important:
+- If the customer reports a duplicate or incorrect charge, classify it as billing even if they may eventually need a refund.
+- Only classify as refund when the customer explicitly requests or asks about getting money back.
 - Reply with ONLY one word.
 - Do not explain your answer.
 - Do not include punctuation.

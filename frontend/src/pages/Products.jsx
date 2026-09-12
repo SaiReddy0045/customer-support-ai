@@ -51,11 +51,12 @@ function Products() {
 
   return (
     <div className="page products-page">
-      <div className="products-header">
+      <div className="catalog-hero">
+        <img src="/images/lifestyle.jpg" alt="Shop ABC Technologies" />
         <div>
           <p className="eyebrow">Store</p>
-          <h1>Technology products</h1>
-          <p>Browse wearables, audio, smart home devices and accessories.</p>
+          <h1>Shop the latest tech</h1>
+          <p>Browse wearables, audio, smart home devices and accessories with studio product photos.</p>
         </div>
       </div>
 

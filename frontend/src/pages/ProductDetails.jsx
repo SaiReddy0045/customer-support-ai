@@ -67,8 +67,8 @@ function ProductDetails() {
   return (
     <div className="page product-details">
       <div className="details-grid">
-        <ProductImage icon={product.icon} name={product.category} large />
-        <div>
+        <ProductImage product={product} large />
+        <div className="details-copy">
           <p className="product-category">{product.category}</p>
           <h1>{product.name}</h1>
           <p className="rating">

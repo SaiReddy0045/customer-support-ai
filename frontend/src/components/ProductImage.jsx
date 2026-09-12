@@ -1,36 +1,29 @@
-import {
-  FiWatch,
-  FiHeadphones,
-  FiBatteryCharging,
-  FiWifi,
-  FiCamera,
-  FiSun,
-  FiSmartphone,
-} from "react-icons/fi";
-import { BsKeyboard, BsEarbuds } from "react-icons/bs";
-import { MdOutlineWatch, MdSpeaker } from "react-icons/md";
-
-const ICONS = {
-  watch: FiWatch,
-  earbuds: BsEarbuds,
-  speaker: MdSpeaker,
-  powerbank: FiBatteryCharging,
-  headphones: FiHeadphones,
-  plug: FiWifi,
-  keyboard: BsKeyboard,
-  camera: FiCamera,
-  band: MdOutlineWatch,
-  case: FiSmartphone,
-  lamp: FiSun,
-  neckband: FiHeadphones,
+const IMAGE_BY_ICON = {
+  watch: "/images/watch.jpg",
+  earbuds: "/images/earbuds.jpg",
+  speaker: "/images/speaker.jpg",
+  powerbank: "/images/powerbank.jpg",
+  headphones: "/images/headphones.jpg",
+  plug: "/images/plug.jpg",
+  keyboard: "/images/keyboard.jpg",
+  camera: "/images/camera.jpg",
+  band: "/images/band.jpg",
+  case: "/images/case.jpg",
+  lamp: "/images/lamp.jpg",
+  neckband: "/images/neckband.jpg",
 };
 
-function ProductImage({ icon = "watch", name, large = false }) {
-  const Icon = ICONS[icon] || FiWatch;
+function ProductImage({ product, src, icon, name, alt, large = false }) {
+  const imageSrc =
+    src ||
+    product?.image ||
+    IMAGE_BY_ICON[icon || product?.icon] ||
+    "/images/headphones.jpg";
+  const label = alt || product?.name || name || "Product photo";
+
   return (
-    <div className={`product-visual ${large ? "large" : ""}`} aria-hidden="true">
-      <Icon />
-      <span>{name}</span>
+    <div className={`product-photo ${large ? "large" : ""}`}>
+      <img src={imageSrc} alt={label} />
     </div>
   );
 }

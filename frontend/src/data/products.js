@@ -11,10 +11,11 @@ const products = [
     createdAt: "2026-07-02T10:00:00.000Z",
     featured: true,
     icon: "watch",
+    image: "/images/watch.jpg",
     description:
       "Track workouts, heart rate and notifications with a bright AMOLED display and week-long battery life.",
     specs: {
-      Display: "1.8\" AMOLED",
+      Display: '1.8" AMOLED',
       Battery: "Up to 7 days",
       Water: "5 ATM",
       Connectivity: "Bluetooth 5.3",
@@ -32,6 +33,7 @@ const products = [
     createdAt: "2026-06-18T10:00:00.000Z",
     featured: true,
     icon: "earbuds",
+    image: "/images/earbuds.jpg",
     description:
       "Lightweight wireless earbuds with clear calls, deep bass and a compact charging case.",
     specs: {
@@ -53,6 +55,7 @@ const products = [
     createdAt: "2026-05-22T10:00:00.000Z",
     featured: true,
     icon: "speaker",
+    image: "/images/speaker.jpg",
     description:
       "A compact smart speaker for music, voice commands and room-filling stereo sound.",
     specs: {
@@ -74,6 +77,7 @@ const products = [
     createdAt: "2026-04-11T10:00:00.000Z",
     featured: true,
     icon: "powerbank",
+    image: "/images/powerbank.jpg",
     description:
       "Fast-charging 20,000 mAh power bank with dual USB-C ports for phones, earbuds and watches.",
     specs: {
@@ -95,6 +99,7 @@ const products = [
     createdAt: "2026-08-01T10:00:00.000Z",
     featured: false,
     icon: "headphones",
+    image: "/images/headphones.jpg",
     description:
       "Over-ear wireless headphones with immersive audio, soft cushions and all-day comfort.",
     specs: {
@@ -116,6 +121,7 @@ const products = [
     createdAt: "2026-03-14T10:00:00.000Z",
     featured: false,
     icon: "plug",
+    image: "/images/plug.jpg",
     description:
       "Control lamps and appliances from your phone. Energy monitoring included.",
     specs: {
@@ -137,6 +143,7 @@ const products = [
     createdAt: "2026-08-20T10:00:00.000Z",
     featured: false,
     icon: "keyboard",
+    image: "/images/keyboard.jpg",
     description:
       "Compact mechanical keyboard with hot-swappable switches for work and gaming.",
     specs: {
@@ -158,6 +165,7 @@ const products = [
     createdAt: "2026-07-28T10:00:00.000Z",
     featured: false,
     icon: "camera",
+    image: "/images/camera.jpg",
     description:
       "Indoor security camera with 360° pan, night vision and two-way talk.",
     specs: {
@@ -179,10 +187,11 @@ const products = [
     createdAt: "2026-02-09T10:00:00.000Z",
     featured: false,
     icon: "band",
+    image: "/images/band.jpg",
     description:
       "Everyday fitness band with sleep tracking, step goals and 10-day battery life.",
     specs: {
-      Display: "1.1\" TFT",
+      Display: '1.1" TFT',
       Battery: "Up to 10 days",
       Sensors: "HR + SpO2",
       Sports: "20 modes",
@@ -200,6 +209,7 @@ const products = [
     createdAt: "2026-09-01T10:00:00.000Z",
     featured: false,
     icon: "case",
+    image: "/images/case.jpg",
     description:
       "Protective cases and a magnetic charging ring for phones and earbuds.",
     specs: {
@@ -221,6 +231,7 @@ const products = [
     createdAt: "2026-06-30T10:00:00.000Z",
     featured: false,
     icon: "lamp",
+    image: "/images/lamp.jpg",
     description:
       "Tunable white and color lamp with schedules, scenes and app control.",
     specs: {
@@ -242,6 +253,7 @@ const products = [
     createdAt: "2026-01-20T10:00:00.000Z",
     featured: false,
     icon: "neckband",
+    image: "/images/neckband.jpg",
     description:
       "Flexible neckband earphones with magnetic buds and 18-hour playback.",
     specs: {
