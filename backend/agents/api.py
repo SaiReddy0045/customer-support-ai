@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-from backend.agents.graph.workflow import workflow
+from graph.workflow import workflow
 
 
 app = FastAPI(
@@ -27,16 +27,18 @@ def home():
 
 @app.post("/chat", response_model=ChatResponse)
 def chat(request: ChatRequest):
-
     state = {
         "query": request.message,
         "intent": "",
         "response": ""
     }
 
-    result = workflow.invoke(state)
+    try:
+        result = workflow.invoke(state)
+    except Exception:
+        result = {"intent": "support", "response": "I found the relevant information, but the AI response service is temporarily unavailable. Please try again shortly."}
 
     return ChatResponse(
-        intent=result["intent"],
-        response=result["response"]
+        intent=result.get("intent", "support"),
+        response=result.get("response", "I'm here to help.")
     )

@@ -49,6 +49,13 @@ function Navbar() {
           <NavLink to="/products" onClick={closeMenus}>
             Products
           </NavLink>
+          <NavLink to="/orders" onClick={closeMenus}>
+            My Orders
+          </NavLink>
+          <NavLink to="/support" onClick={closeMenus}>
+            AI Support
+          </NavLink>
+          {isLoggedIn && <NavLink to="/refunds" onClick={closeMenus}>Refunds</NavLink>}
         </nav>
 
         <form className="nav-search" onSubmit={onSearch}>
@@ -89,11 +96,13 @@ function Navbar() {
               {profileOpen && (
                 <div className="profile-menu">
                   <Link to="/profile" onClick={closeMenus}>
-                    Profile
+                    Account
                   </Link>
                   <Link to="/orders" onClick={closeMenus}>
-                    Orders
+                    My Orders
                   </Link>
+                  <Link to="/refunds" onClick={closeMenus}>Refunds</Link>
+                  <Link to="/support/tickets" onClick={closeMenus}>Support Tickets</Link>
                   <button
                     type="button"
                     onClick={() => {
@@ -108,9 +117,14 @@ function Navbar() {
               )}
             </div>
           ) : (
-            <Link to="/login" className="login-chip" onClick={closeMenus}>
-              Login
-            </Link>
+            <>
+              <Link to="/profile" className="login-chip" onClick={closeMenus}>
+                Account
+              </Link>
+              <Link to="/login" className="login-chip" onClick={closeMenus}>
+                Login
+              </Link>
+            </>
           )}
 
           <button

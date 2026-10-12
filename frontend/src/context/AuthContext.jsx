@@ -1,4 +1,5 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import api from "../services/api";
 import {
   getSession,
   login as loginRequest,
@@ -10,8 +11,36 @@ const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => getSession());
+  const [sessionChecking, setSessionChecking] = useState(Boolean(getSession()));
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    let active = true;
+    const storedSession = getSession();
+    const clearSession = () => {
+      logoutSession();
+      if (active) setUser(null);
+    };
+    window.addEventListener("abc-session-expired", clearSession);
+    if (storedSession?.sessionToken) {
+      api.get("/auth/me")
+        .then(({ data }) => {
+          if (!active) return;
+          setUser((current) => ({ ...current, ...data }));
+        })
+        .catch(() => clearSession())
+        .finally(() => {
+          if (active) setSessionChecking(false);
+        });
+    } else {
+      setSessionChecking(false);
+    }
+    return () => {
+      active = false;
+      window.removeEventListener("abc-session-expired", clearSession);
+    };
+  }, []);
 
   const register = async (payload) => {
     setStatus("registering");
@@ -33,6 +62,7 @@ export function AuthProvider({ children }) {
     try {
       const session = await loginRequest(payload);
       setUser(session);
+      setSessionChecking(false);
       setStatus("idle");
       return session;
     } catch (err) {
@@ -50,6 +80,7 @@ export function AuthProvider({ children }) {
   const value = {
     user,
     isLoggedIn: Boolean(user),
+    sessionChecking,
     status,
     error,
     setError,

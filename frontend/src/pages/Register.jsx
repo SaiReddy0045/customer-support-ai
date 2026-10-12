@@ -49,8 +49,7 @@ function Register() {
           <p>Your Customer ID is</p>
           <div className="customer-id-box">{created.customerId}</div>
           <p className="muted">
-            This frontend demo stores accounts in localStorage only. Real
-            authentication will be handled by FastAPI later.
+            Your account is stored by ABC Technologies. Sign in to access your orders and support history.
           </p>
           <Link to="/login" className="btn primary full">
             Continue to Login

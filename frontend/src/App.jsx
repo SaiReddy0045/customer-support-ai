@@ -15,6 +15,8 @@ import Orders from "./pages/Orders";
 import OrderDetails from "./pages/OrderDetails";
 import Profile from "./pages/Profile";
 import Support from "./pages/Support";
+import Refunds from "./pages/Refunds";
+import SupportTickets from "./pages/SupportTickets";
 
 function App() {
   return (
@@ -29,7 +31,7 @@ function App() {
               <Route path="/products" element={<Products />} />
               <Route path="/products/:id" element={<ProductDetails />} />
               <Route path="/cart" element={<Cart />} />
-              <Route path="/support" element={<Support />} />
+              <Route path="/support" element={<ProtectedRoute><Support /></ProtectedRoute>} />
               <Route
                 path="/checkout"
                 element={
@@ -70,6 +72,8 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+              <Route path="/refunds" element={<ProtectedRoute><Refunds /></ProtectedRoute>} />
+              <Route path="/support/tickets" element={<ProtectedRoute><SupportTickets /></ProtectedRoute>} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Route>
           </Routes>

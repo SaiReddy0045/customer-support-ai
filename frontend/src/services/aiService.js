@@ -132,6 +132,10 @@ export async function sendMessage(message, customerId, context = {}) {
     return buildMockResponse(message, customerId, context);
   }
 
+  if (!customerId) {
+    throw new Error("Please sign in before asking about refunds, orders, or payments.");
+  }
+
   const response = await api.post("/chat", {
     message,
     customer_id: customerId,

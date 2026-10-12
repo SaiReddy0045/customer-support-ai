@@ -52,6 +52,41 @@ export async function getOrderById(orderId) {
   return response.data;
 }
 
+export async function getOrderTracking(customerId) {
+  if (USE_MOCK_API) {
+    return getAllOrders()
+      .filter((order) => order.customerId === customerId)
+      .map((order) => ({
+        orderId: order.orderId,
+        currentStatus: order.orderStatus,
+        timeline: [
+          { status: "Order Confirmed", note: "Order placed and payment verified.", time: order.createdAt },
+          { status: order.orderStatus, note: "Current delivery milestone.", time: order.createdAt },
+        ],
+      }));
+  }
+
+  const response = await api.get(`/orders/${customerId}/tracking`);
+  return response.data;
+}
+
+export async function getTrackingByOrderId(orderId) {
+  if (USE_MOCK_API) {
+    const order = getAllOrders().find((item) => item.orderId === orderId);
+    return order
+      ? {
+          order_id: order.orderId,
+          status: order.orderStatus,
+          stage: 1,
+          stages: [{ name: "Order Confirmed", completed: true, current: true }],
+        }
+      : null;
+  }
+
+  const response = await api.get(`/orders/${orderId}/tracking`);
+  return response.data;
+}
+
 export async function updateOrderStatus(orderId, updates) {
   if (USE_MOCK_API) {
     const next = getAllOrders().map((order) =>

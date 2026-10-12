@@ -4,7 +4,7 @@ import useChat from "../hooks/useChat";
 import { useAuth } from "../context/AuthContext";
 
 function Support() {
-  const { user, isLoggedIn } = useAuth();
+  const { user } = useAuth();
   const location = useLocation();
   const prompt = location.state?.prompt || "";
   const extraContext = location.state?.context || {};
@@ -19,7 +19,7 @@ function Support() {
     loadConversation,
     startNewConversation,
   } = useChat({
-    customerId: user?.customerId,
+    customerId: user?.customerId || user?.customer_id,
     initialPrompt: prompt,
     extraContext,
   });
@@ -33,11 +33,6 @@ function Support() {
           <p>Ask anything about your orders, billing, refunds or products.</p>
         </div>
       </div>
-      {!isLoggedIn && (
-        <p className="info-banner">
-          You can chat as a guest. Sign in to let the assistant use your Customer ID, orders and billing history.
-        </p>
-      )}
       <ChatWindow
         messages={messages}
         loading={loading}

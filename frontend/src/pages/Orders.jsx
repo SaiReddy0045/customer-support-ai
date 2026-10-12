@@ -9,14 +9,24 @@ function Orders() {
   const { user } = useAuth();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     let active = true;
-    getOrdersByCustomer(user.customerId).then((data) => {
-      if (!active) return;
-      setOrders(data);
-      setLoading(false);
-    });
+    setLoading(true);
+    setError("");
+    getOrdersByCustomer(user.customerId)
+      .then((data) => {
+        if (!active) return;
+        setOrders(data);
+      })
+      .catch((requestError) => {
+        if (!active) return;
+        setError(requestError.message || "Orders could not be loaded.");
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
     return () => {
       active = false;
     };
@@ -28,6 +38,14 @@ function Orders() {
       <p className="muted">Your demo order history for AI support scenarios.</p>
       {loading ? (
         <Loading label="Loading orders..." />
+      ) : error ? (
+        <div className="empty-state" role="alert">
+          <h2>Orders unavailable</h2>
+          <p>{error}</p>
+          <button type="button" className="btn ghost" onClick={() => window.location.reload()}>
+            Retry
+          </button>
+        </div>
       ) : orders.length === 0 ? (
         <div className="empty-state">
           <h2>No orders yet</h2>
@@ -54,7 +72,7 @@ function Orders() {
                   <td>{formatPrice(order.totalAmount)}</td>
                   <td><span className="status-badge">{order.orderStatus}</span></td>
                   <td>
-                    <Link to={`/orders/${order.orderId}`}>View Order</Link>
+                    <Link to={`/orders/${order.orderId}`}>Track / View</Link>
                   </td>
                 </tr>
               ))}

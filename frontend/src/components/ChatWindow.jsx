@@ -4,12 +4,22 @@ import Loading from "./Loading";
 import AgentStatus from "./AgentStatus";
 
 const SUGGESTIONS = [
-  "Where is my order?",
-  "Can I get a refund?",
-  "Why was I charged?",
-  "Which product should I buy?",
-  "Show my recent orders",
+  "Track Order",
+  "Cancel Order",
+  "Refund Status",
+  "Payment Issue",
+  "Find Products",
+  "Talk to Support",
 ];
+
+const QUICK_ACTION_PROMPTS = {
+  "Track Order": "Where is my latest order?",
+  "Cancel Order": "Cancel my latest order",
+  "Refund Status": "What is my refund status?",
+  "Payment Issue": "I have a payment issue",
+  "Find Products": "Show me products",
+  "Talk to Support": "Talk to a human",
+};
 
 function ChatWindow({
   messages,
@@ -36,7 +46,7 @@ function ChatWindow({
 
         <div className="suggestion-row">
           {SUGGESTIONS.map((item) => (
-            <button key={item} type="button" onClick={() => onSend(item)}>
+            <button key={item} type="button" onClick={() => onSend(QUICK_ACTION_PROMPTS[item] || item)}>
               {item}
             </button>
           ))}

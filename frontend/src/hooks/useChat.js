@@ -64,7 +64,7 @@ export default function useChat({ customerId, initialPrompt, extraContext }) {
   }, [conversation?.conversationId, initialPrompt]);
 
   const loadConversation = (conversationId) => {
-    const next = getConversation(conversationId);
+    const next = getConversation(conversationId, customerId);
     if (!next) return;
     setConversation(next);
     setMessages(next.messages);
@@ -144,7 +144,7 @@ export default function useChat({ customerId, initialPrompt, extraContext }) {
       setError(err.message || "Network error");
       const fallback = {
         role: "assistant",
-        text: "I couldn't reach the support service. Please try again in a moment.",
+        text: err.message || "I couldn't reach the support service. Please try again in a moment.",
         createdAt: new Date().toISOString(),
       };
       setMessages((current) => [...current, fallback]);

@@ -1,8 +1,17 @@
 import { STORAGE_KEYS, readJson, writeJson, removeKey } from "../utils/storage";
 
+function newIdempotencyKey() {
+  return globalThis.crypto?.randomUUID?.() || `checkout-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+
 export function saveCheckoutDraft(draft) {
-  writeJson(STORAGE_KEYS.CHECKOUT, draft);
-  return draft;
+  const current = getCheckoutDraft();
+  const nextDraft = {
+    ...draft,
+    idempotencyKey: draft.idempotencyKey || current?.idempotencyKey || newIdempotencyKey(),
+  };
+  writeJson(STORAGE_KEYS.CHECKOUT, nextDraft);
+  return nextDraft;
 }
 
 export function getCheckoutDraft() {

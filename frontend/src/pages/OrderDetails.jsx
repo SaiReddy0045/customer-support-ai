@@ -1,26 +1,43 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Loading from "../components/Loading";
-import { getOrderById, updateOrderStatus } from "../services/orderService";
+import { getOrderById, getTrackingByOrderId } from "../services/orderService";
 import { formatDate, formatPrice } from "../utils/format";
 
 function OrderDetails() {
   const { orderId } = useParams();
   const navigate = useNavigate();
   const [order, setOrder] = useState(null);
+  const [tracking, setTracking] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const refreshOrder = useCallback(async () => {
+    const [orderData, trackingData] = await Promise.all([
+      getOrderById(orderId),
+      getTrackingByOrderId(orderId),
+    ]);
+    setOrder(orderData);
+    setTracking(trackingData || orderData?.tracking || null);
+  }, [orderId]);
 
   useEffect(() => {
     let active = true;
-    getOrderById(orderId).then((data) => {
-      if (!active) return;
-      setOrder(data);
-      setLoading(false);
-    });
+    refreshOrder()
+      .then(() => {
+        if (!active) return;
+        setLoading(false);
+      })
+      .catch(() => {
+        if (!active) return;
+        setLoading(false);
+      });
     return () => {
       active = false;
     };
-  }, [orderId]);
+  }, [refreshOrder]);
+
+  const activeTracking = tracking?.stages || [];
+  const displayedStatus = tracking?.status || order?.orderStatus;
 
   if (loading) {
     return (
@@ -39,19 +56,12 @@ function OrderDetails() {
     );
   }
 
-  const requestRefund = async () => {
-    const updated = await updateOrderStatus(order.orderId, {
-      orderStatus: "Refund Requested",
-    });
-    setOrder(updated);
-  };
-
   return (
     <div className="page">
       <p className="eyebrow">Order</p>
       <h1>{order.orderId}</h1>
       <p className="muted">Placed {formatDate(order.createdAt)}</p>
-      <span className="status-badge">{order.orderStatus}</span>
+      <span className="status-badge">{displayedStatus}</span>
 
       <div className="details-split">
         <section className="panel">
@@ -71,13 +81,16 @@ function OrderDetails() {
         </section>
         <section className="panel">
           <h2>Shipping</h2>
-          <p>{order.shippingAddress?.fullName}</p>
-          <p>{order.shippingAddress?.address}</p>
-          <p>
-            {order.shippingAddress?.city}, {order.shippingAddress?.state}{" "}
-            {order.shippingAddress?.pincode}
-          </p>
-          <p>{order.shippingAddress?.phone}</p>
+          {typeof order.shippingAddress === "string" ? (
+            <p>{order.shippingAddress}</p>
+          ) : (
+            <>
+              <p>{order.shippingAddress?.fullName}</p>
+              <p>{order.shippingAddress?.address}</p>
+              <p>{order.shippingAddress?.city}, {order.shippingAddress?.state} {order.shippingAddress?.pincode}</p>
+              <p>{order.shippingAddress?.phone}</p>
+            </>
+          )}
           <div className="stack-actions">
             <button
               type="button"
@@ -93,13 +106,34 @@ function OrderDetails() {
             >
               Ask AI about this order
             </button>
-            {order.paymentStatus === "Payment Successful" &&
-              order.orderStatus !== "Refund Requested" &&
-              order.orderStatus !== "Refunded" && (
-                <button type="button" className="btn text" onClick={requestRefund}>
+            {order.cancellationEligible && (
+              <button
+                type="button"
+                className="btn ghost"
+                onClick={() => navigate("/support", {
+                  state: {
+                    prompt: `Cancel order ${order.orderId}`,
+                    context: { orderId: order.orderId },
+                  },
+                })}
+              >
+                Request cancellation
+              </button>
+            )}
+            {order.refundEligible && (
+                <button
+                  type="button"
+                  className="btn text"
+                  onClick={() => navigate("/support", {
+                    state: {
+                      prompt: `I need a refund for order ${order.orderId}`,
+                      context: { orderId: order.orderId },
+                    },
+                  })}
+                >
                   Request refund / Ask AI about this refund
                 </button>
-              )}
+            )}
             {order.transactionId && (
               <button
                 type="button"
@@ -119,6 +153,30 @@ function OrderDetails() {
           </div>
         </section>
       </div>
+
+      {activeTracking.length > 0 && (
+        <section className="panel" style={{ marginTop: "1.5rem" }}>
+          <h2>Tracking Timeline</h2>
+          <div style={{ display: "grid", gap: "0.75rem" }}>
+            {activeTracking.map((step, index) => (
+              <div
+                key={`${step.name}-${index}`}
+                style={{
+                  padding: "0.75rem 1rem",
+                  borderLeft: "4px solid #3b82f6",
+                  background: "rgba(59,130,246,0.04)",
+                  borderRadius: "8px",
+                }}
+              >
+                <strong>{step.name}</strong>
+                <p style={{ margin: "0.2rem 0 0" }}>
+                  {step.current ? "Current delivery stage" : step.completed ? "Completed" : "Upcoming"}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }

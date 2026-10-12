@@ -1,30 +1,32 @@
-# AI Customer Support Automation System
+# ABC Technologies Support API
 
-## 📖 About
+The backend is a FastAPI application backed by one SQLite database at
+`backend/ecommerce.db`. Database initialization is automatic at startup.
 
-This project is being built from scratch as part of my AI Engineering learning journey.
+## Start the backend
 
-The goal is to develop an AI-powered Customer Support Automation System using:
+```powershell
+cd backend
+python -m uvicorn api:app --host 127.0.0.1 --port 8000
+```
 
-- LangGraph
-- LangChain
-- Ollama
-- FastAPI
-- React
-- PostgreSQL
+Start only one Uvicorn process on port `8000`.
 
-Every feature is developed step by step with proper understanding instead of copying tutorials.
+## Start the frontend
 
----
+In a second terminal:
 
-## 🚀 Current Progress
+```powershell
+cd frontend
+npm install
+npm run dev -- --host 0.0.0.0
+```
 
-- ✅ Project initialized
-- ✅ Virtual environment created
-- ✅ Git repository initialized
+The frontend uses `http://localhost:8000` unless `VITE_API_URL` is set.
 
----
+## Runtime design
 
-## 👨‍💻 Author
-
-T.Sai Kumar Reddy
+Order, billing, refund, and tracking requests use authenticated customer-scoped
+database operations first. The local LLM is reserved for general explanations
+and non-deterministic support questions, keeping routine operations responsive
+on low-memory hardware.

@@ -45,10 +45,10 @@ function Home() {
         <img src="/images/hero.jpg" alt="ABC Technologies devices on a desk" />
         <div className="hero-overlay">
           <p className="eyebrow light">ABC Technologies</p>
-          <h1>Technology made for you.</h1>
+          <h1>Shop Smarter with ABC Technologies</h1>
           <p>
-            Explore smart devices, accessories and technology products from ABC
-            Technologies.
+            Discover premium audio, wearables, smart-home essentials and everyday
+            accessories with AI-guided support for every step of the purchase.
           </p>
           {user && (
             <p className="welcome-line">
@@ -57,10 +57,10 @@ function Home() {
           )}
           <div className="hero-actions">
             <Link to="/products" className="btn primary">
-              Explore Products
+              Shop Now
             </Link>
             <Link to="/support" className="btn light">
-              Ask AI Assistant
+              Ask AI
             </Link>
           </div>
         </div>

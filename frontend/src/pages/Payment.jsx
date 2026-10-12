@@ -1,14 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
-import { clearCheckoutDraft, getCheckoutDraft } from "../services/checkoutService";
+import { clearCheckoutDraft, getCheckoutDraft, saveCheckoutDraft } from "../services/checkoutService";
 import { processDemoPayment } from "../services/paymentService";
 import { createOrder } from "../services/orderService";
 import { formatPrice } from "../utils/format";
 
 function Payment() {
-  const draft = getCheckoutDraft();
+  const [draft, setDraft] = useState(() => getCheckoutDraft());
   const { user } = useAuth();
   const { clearCart } = useCart();
   const navigate = useNavigate();
@@ -24,6 +24,12 @@ function Payment() {
   const [upiId, setUpiId] = useState("customer@abcpay");
   const [bank, setBank] = useState("ABC Demo Bank");
 
+  useEffect(() => {
+    if (draft && !draft.idempotencyKey) {
+      setDraft(saveCheckoutDraft(draft));
+    }
+  }, [draft]);
+
   if (!draft) {
     return (
       <div className="page empty-state">
@@ -37,7 +43,7 @@ function Payment() {
   const method = draft.paymentMethod;
   const amount = draft.totals.total;
 
-  const placeOrder = async (paymentStatus, orderStatus, transactionId) => {
+  const placeOrder = async (paymentStatus, orderStatus, transactionId, paymentToken = null) => {
     const order = await createOrder({
       customerId: user.customerId,
       items: draft.items,
@@ -46,6 +52,8 @@ function Payment() {
       paymentStatus,
       orderStatus,
       transactionId,
+      paymentToken,
+      idempotencyKey: draft.idempotencyKey,
       shippingAddress: draft.shippingAddress,
     });
     clearCart();
@@ -69,6 +77,7 @@ function Payment() {
         amount,
         paymentMethod: method,
         customerId: user.customerId,
+        items: draft.items,
         cardNumber: card.number,
         cvv: card.cvv,
         upiId,
@@ -78,7 +87,8 @@ function Payment() {
       const order = await placeOrder(
         "Payment Successful",
         "Order Confirmed",
-        payment.transactionId
+        payment.transactionId,
+        payment.paymentToken
       );
       setResult({ type: "success", order, payment });
     } catch (err) {

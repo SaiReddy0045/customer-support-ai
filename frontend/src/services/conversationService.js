@@ -16,10 +16,12 @@ export function getConversations(customerId) {
     .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
 }
 
-export function getConversation(conversationId) {
+export function getConversation(conversationId, customerId) {
   return (
     getAllConversations().find(
-      (conversation) => conversation.conversationId === conversationId
+      (conversation) =>
+        conversation.conversationId === conversationId &&
+        (!customerId || conversation.customerId === (customerId || "guest"))
     ) || null
   );
 }

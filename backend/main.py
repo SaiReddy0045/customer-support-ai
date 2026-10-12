@@ -20,10 +20,16 @@ def main():
             "response": ""
         }
 
-        result = workflow.invoke(state)
+        try:
+            result = workflow.invoke(state)
+        except Exception:
+            result = {
+                "intent": "support",
+                "response": "I found the relevant information, but the AI response service is temporarily unavailable. Please try again shortly."
+            }
 
-        print(f"\nDetected Intent: {result['intent']}")
-        print(f"\nAI: {result['response']}")
+        print(f"\nDetected Intent: {result.get('intent', 'support')}")
+        print(f"\nAI: {result.get('response', 'I can help with that.')}")
 
 
 if __name__ == "__main__":

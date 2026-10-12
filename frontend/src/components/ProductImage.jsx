@@ -23,7 +23,14 @@ function ProductImage({ product, src, icon, name, alt, large = false }) {
 
   return (
     <div className={`product-photo ${large ? "large" : ""}`}>
-      <img src={imageSrc} alt={label} />
+      <img
+        src={imageSrc}
+        alt={label}
+        onError={(event) => {
+          event.currentTarget.onerror = null;
+          event.currentTarget.src = "/images/headphones.jpg";
+        }}
+      />
     </div>
   );
 }
